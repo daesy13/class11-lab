@@ -1,6 +1,4 @@
 
-var leftTarget, middleTarget, rightTarget;
-
 var arrayOfAll = [
     'bag',
     'banana',
