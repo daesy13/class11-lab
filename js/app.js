@@ -87,19 +87,25 @@ function randomTres(){
 
     var arrayOfTresNumbers = [];
 
-    for(i = 0; i < 3; i++){
-        arrayOfTresNumbers.push(Math.floor(Math.random() * arrayOfAll.length) + 0);
-    }
-    for (i = 0; i < arrayOfTresNumbers.length; i++){
-        for(x = 0; x < arrayOfTresNumbers.length; x++){
-            if (arrayOfTresNumbers[i] === arrayOfTresNumbers[x]){
-                arrayOfTresNumbers[i] = (Math.floor(Math.random() * arrayOfAll.length) + 0);
-            }
+    while(arrayOfTresNumbers.length < 3){
+        var newNumber = Math.floor(Math.random() * arrayOfAll.length) + 0;
+        if (arrayOfTresNumbers.includes(newNumber)){
+            arrayOfTresNumbers.pop();
+        }else{
+            arrayOfTresNumbers.push(newNumber);
         }
     }
-
+    // for (i = 0; i < arrayOfTresNumbers.length; i++){
+    //     for(x = 0; x < arrayOfTresNumbers.length; x++){
+    //         if (arrayOfTresNumbers[i] === arrayOfTresNumbers[x]){
+    //             arrayOfTresNumbers[i] = (Math.floor(Math.random() * arrayOfAll.length) + 0);
+    //         }
+    //     }
     return arrayOfTresNumbers
-}
+     }
+
+    // return arrayOfTresNumbers
+// }
 
 function drawIt(){
 
@@ -130,8 +136,9 @@ function drawIt(){
 
 
 function clickHandler(event) {
-
-
+    console.log(`${leftProduct.name}:${dictionaryOfClicks[leftProduct.name]}-1`);
+    console.log(`${centerProduct.name}:${dictionaryOfClicks[centerProduct.name]}-2`);
+    console.log(`${rightProduct.name}:${dictionaryOfClicks[rightProduct.name]}-3`);
     var id = event.target.id;
   
     if(id == 'leftProduct_img') {
@@ -156,6 +163,6 @@ function clickHandler(event) {
 }
 
 
-    for(i =0; i < dictionaryOfClicks.length; i++){
-        console.log(dictionaryOfClicks)
-    }
+    // for(i =0; i < dictionaryOfClicks.length; i++){
+    //     console.log(dictionaryOfClicks)
+    //}
