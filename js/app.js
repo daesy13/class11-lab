@@ -86,27 +86,15 @@ function randomTres(){
 
     while(arrayOfTresNumbers.length < 3){
         var newNumber = Math.floor(Math.random() * arrayOfAll.length) + 0;
-        if (arrayOfTresNumbers.includes(newNumber)){
-            arrayOfTresNumbers.pop();
-        }else{
+        if (!arrayOfTresNumbers.includes(newNumber)){
             arrayOfTresNumbers.push(newNumber);
-        }
+         }
     }
-    // for (i = 0; i < arrayOfTresNumbers.length; i++){
-    //     for(x = 0; x < arrayOfTresNumbers.length; x++){
-    //         if (arrayOfTresNumbers[i] === arrayOfTresNumbers[x]){
-    //             arrayOfTresNumbers[i] = (Math.floor(Math.random() * arrayOfAll.length) + 0);
-    //         }
-    //     }
     return arrayOfTresNumbers
-     }
-
-    // return arrayOfTresNumbers
-// }
+}
 
 function drawIt(){
 
-    // var products = [];
 
     var new3 = randomTres();
 
@@ -158,8 +146,3 @@ function clickHandler(event) {
 
     drawIt();
 }
-
-
-    // for(i =0; i < dictionaryOfClicks.length; i++){
-    //     console.log(dictionaryOfClicks)
-    //}
