@@ -74,10 +74,9 @@ function Producto(producto) {
   centerProductNameElement.textContent = centerProduct.name;
   centerProductImage.addEventListener('click', clickHandler);
 
-
   var rightProduct = new Producto(arrayOfAll[firstThree[2]]);
   var rightProductImage = document.getElementById('rightProduct_img');
-  rightProductImage.setAttribute('src', rightProduct.imgUrl);
+  rightProductImage.src = rightProduct.imgUrl;
   var rightProductNameElement = document.getElementById('rightProduct_heading');
   rightProductNameElement.textContent = rightProduct.name;
   rightProductImage.addEventListener('click', clickHandler);
@@ -127,7 +126,7 @@ function drawIt(){
 
     rightProduct = new Producto(arrayOfAll[new3[2]]);
     rightProductImage = document.getElementById('rightProduct_img');
-    rightProductImage.setAttribute('src', rightProduct.imgUrl);
+    rightProductImage.src = rightProduct.imgUrl;
     rightProductNameElement = document.getElementById('rightProduct_heading');
     rightProductNameElement.textContent = rightProduct.name;
 
