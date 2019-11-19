@@ -1,3 +1,6 @@
+
+var leftTarget, middleTarget, rightTarget;
+
 var arrayOfAll = [
     'bag',
     'banana',
@@ -19,7 +22,28 @@ var arrayOfAll = [
     'wine-glass'
 ];
 
-function Product(producto) {
+var dictionaryOfClicks = {
+
+    'bag':0,
+    'banana':0,
+    'bathroom':0,
+    'boots':0,
+    'breakfast':0,
+    'bubblegum':0,
+    'chair':0,
+    'cthulhu':0,
+    'dog-duck':0,
+    'dragon':0,
+    'pen':0,
+    'pet-sweep':0,
+    'scissors':0,
+    'shark':0,
+    'tauntaun':0,
+    'unicorn':0,
+    'water-can':0,
+    'wine-glass':0}
+
+function Producto(producto) {
 
     this.name = producto;
     this.imgUrl = `assets/${producto}.jpg`;
@@ -27,12 +51,37 @@ function Product(producto) {
     this.shownCtr = 0;
   }
   
-  Product.voteCount = 0;
-  Product.maxVote = 25;
+  Producto.voteCount = 0;
+  Producto.maxVote = 25;
 
-  Product.prototype.clickCountPlus = function(){
+  Producto.prototype.clickCountPlus = function(){
       this.clickCtr++;
   }
+
+  var firstThree = randomTres();
+
+  var leftProduct = new Producto(arrayOfAll[firstThree[0]]);
+  var leftProductImage = document.getElementById('leftProduct_img');
+  leftProductImage.setAttribute('src', leftProduct.imgUrl);
+  var leftProductNameElement = document.getElementById('leftProduct_heading');
+  leftProductNameElement.textContent = leftProduct.name;
+  leftProductImage.addEventListener('click', clickHandler);
+
+  var centerProduct = new Producto(arrayOfAll[firstThree[1]]);
+  var centerProductImage = document.getElementById('centerProduct_img');
+  centerProductImage.setAttribute('src', centerProduct.imgUrl);
+  var centerProductNameElement = document.getElementById('centerProduct_heading');
+  centerProductNameElement.textContent = centerProduct.name;
+  centerProductImage.addEventListener('click', clickHandler);
+
+
+  var rightProduct = new Producto(arrayOfAll[firstThree[2]]);
+  var rightProductImage = document.getElementById('rightProduct_img');
+  rightProductImage.setAttribute('src', rightProduct.imgUrl);
+  var rightProductNameElement = document.getElementById('rightProduct_heading');
+  rightProductNameElement.textContent = rightProduct.name;
+  rightProductImage.addEventListener('click', clickHandler);
+
 
 function randomTres(){
 
@@ -41,69 +90,72 @@ function randomTres(){
     for(i = 0; i < 3; i++){
         arrayOfTresNumbers.push(Math.floor(Math.random() * arrayOfAll.length) + 0);
     }
+    for (i = 0; i < arrayOfTresNumbers.length; i++){
+        for(x = 0; x < arrayOfTresNumbers.length; x++){
+            if (arrayOfTresNumbers[i] === arrayOfTresNumbers[x]){
+                arrayOfTresNumbers[i] = (Math.floor(Math.random() * arrayOfAll.length) + 0);
+            }
+        }
+    }
 
-    arrayOf3Products = [];
-
-    var leftProduct = new Product(arrayOfAll[arrayOfTresNumbers[0]]);
-    var leftProductImage = document.getElementById('leftProduct_img');
-    leftProductImage.setAttribute('src', leftProduct.imgUrl);
-    var leftProductNameElement = document.getElementById('leftProduct_heading');
-    leftProductNameElement.textContent = leftProduct.name;
-    leftProductImage.addEventListener('click', clickHandler);
-
-    arrayOf3Products.push(leftProduct);
-
-    var centerProduct = new Product(arrayOfAll[arrayOfTresNumbers[1]]);
-    var centerProductImage = document.getElementById('centerProduct_img');
-    centerProductImage.setAttribute('src', centerProduct.imgUrl);
-    var centerProductNameElement = document.getElementById('centerProduct_heading');
-    centerProductNameElement.textContent = centerProduct.name;
-    centerProductImage.addEventListener('click', clickHandler);
-
-    arrayOf3Products.push(centerProduct);
-
-    var rightProduct = new Product(arrayOfAll[arrayOfTresNumbers[2]]);
-    var rightProductImage = document.getElementById('rightProduct_img');
-    rightProductImage.setAttribute('src', rightProduct.imgUrl);
-    var rightProductNameElement = document.getElementById('rightProduct_heading');
-    rightProductNameElement.textContent = rightProduct.name;
-    rightProductImage.addEventListener('click', clickHandler);
-
-    arrayOf3Products.push(rightProduct);
-
-    return arrayOf3Products
+    return arrayOfTresNumbers
 }
 
-randomTres();
+function drawIt(){
+
+    // var products = [];
+
+    var new3 = randomTres();
+
+    leftProduct = new Producto(arrayOfAll[new3[0]]);
+    leftProductImage = document.getElementById('leftProduct_img');
+    leftProductImage.setAttribute('src', leftProduct.imgUrl);
+    leftProductNameElement = document.getElementById('leftProduct_heading');
+    leftProductNameElement.textContent = leftProduct.name;
+  
+    centerProduct = new Producto(arrayOfAll[new3[1]]);
+    centerProductImage = document.getElementById('centerProduct_img');
+    centerProductImage.setAttribute('src', centerProduct.imgUrl);
+    centerProductNameElement = document.getElementById('centerProduct_heading');
+    centerProductNameElement.textContent = centerProduct.name;
+
+    rightProduct = new Producto(arrayOfAll[new3[2]]);
+    rightProductImage = document.getElementById('rightProduct_img');
+    rightProductImage.setAttribute('src', rightProduct.imgUrl);
+    rightProductNameElement = document.getElementById('rightProduct_heading');
+    rightProductNameElement.textContent = rightProduct.name;
+
+}
+
+
 
 function clickHandler(event) {
-    
-    var products = randomTres();
+
 
     var id = event.target.id;
-
-    products[0].shownCtr++;
-    products[1].shownCtr++;
-    products[2].shownCtr++;
-
-    console.log(products[0].shownCtr);
-    console.log(products[1].shownCtr);
-    console.log(products[1].shownCtr);
   
     if(id == 'leftProduct_img') {
-        products[0].clickCountPlus();
+        dictionaryOfClicks[leftProduct.name] += 1;
+        console.log(`${leftProduct.name}:${dictionaryOfClicks[leftProduct.name]}`);
     } else if('centerProduct_img') {
-        products[1].clickCountPlus();
+        dictionaryOfClicks[centerProduct.name] += 1;
+        console.log(`${centerProduct.name}:${dictionaryOfClicks[centerProduct.name]}`);
     }else if('rightProduct_img'){
-        products[2].clickCountPlus();
+        dictionaryOfClicks[rightProduct.name] += 1;
+        console.log(`${rightProduct.name}:${dictionaryOfClicks[rightProduct.name]}`);
     }
-    Product.voteCount++;
+    
 
-    if(Product.voteCount == Product.maxVote) {
+    if(Producto.voteCount == Producto.maxVote) {
         leftImageElem.removeEventListener('click', clickHandler);
         centerImageElem.removeEventListener('click', clickHandler);
         rightImageElem.removeEventListener('click', clickHandler);
       }
- }
+
+    drawIt();
+}
 
 
+    for(i =0; i < dictionaryOfClicks.length; i++){
+        console.log(dictionaryOfClicks)
+    }

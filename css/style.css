@@ -1,0 +1,21 @@
+img {
+    
+    width: 250px;
+    height: 300px;
+    border-radius: 10px;
+   
+}
+
+.row {
+    display: inline-grid;
+    display: flex;
+    justify-content: center;
+    grid-template-columns: 200px;
+   
+}
+.col-md-2 {
+   padding: 20px;
+   text-align: center;
+    
+   
+}
