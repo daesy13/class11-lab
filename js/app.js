@@ -168,9 +168,9 @@ function clickHandler(event) {
     
 
     for (key in dictionaryOfClicks){
-        if (dictionaryOfClicks[key] < 3){
+        if (dictionaryOfClicks[key] < 25){
             drawIt();
-        }else if(dictionaryOfClicks[key] === 3){
+        }else if(dictionaryOfClicks[key] === 25){
             console.log(`key test: ${dictionaryOfClicks[key]}`);
             drawTheGraph();
             leftProductImage.removeEventListener('click', clickHandler);
