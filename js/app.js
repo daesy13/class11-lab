@@ -63,6 +63,9 @@ var dictionaryOfViews = {
         'wine-glass':0}
 
 
+var workingProducts = [];
+var previouslyPickedProduct = [];
+
 function Producto(producto) {
 
     this.name = producto;
@@ -79,7 +82,8 @@ function Producto(producto) {
   }
 
   
-
+  var ctx = document.getElementById('graphContainer');
+  
   var leftProduct;
   var leftProductImage = document.getElementById('leftProduct_img');
   var leftProductNameElement = document.getElementById('leftProduct_heading');
@@ -98,42 +102,53 @@ function Producto(producto) {
   
   rightProductImage.addEventListener('click', clickHandler);
 
+  
 
-function randomTres(){
+function randomTres(forbidden){
 
     var arrayOfTresNumbers = [];
 
     while(arrayOfTresNumbers.length < 3){
         var newNumber = Math.floor(Math.random() * arrayOfAll.length) + 0;
-        if (!arrayOfTresNumbers.includes(newNumber)){
+        if (!arrayOfTresNumbers.includes(newNumber) || !workingProducts.includes(newNumber)){
             arrayOfTresNumbers.push(newNumber);
          }
     }
-    return arrayOfTresNumbers
+    return arrayOfTresNumbers;    
 }
+
 
 function drawIt(){
 
 
-    var new3 = randomTres();
+    var new3 = randomTres(workingProducts);
 
     leftProduct = new Producto(arrayOfAll[new3[0]]);
     leftProductImage.setAttribute('src', leftProduct.imgUrl);
     leftProductNameElement.textContent = leftProduct.name;
     dictionaryOfViews[leftProduct.name] += 1;
+
+    
   
     centerProduct = new Producto(arrayOfAll[new3[1]]);
     centerProductImage.setAttribute('src', centerProduct.imgUrl);
     centerProductNameElement.textContent = centerProduct.name;
     dictionaryOfViews[centerProduct.name] += 1;
 
+    
+
     rightProduct = new Producto(arrayOfAll[new3[2]]);
     rightProductImage.setAttribute('src', rightProduct.imgUrl);
     rightProductNameElement.textContent = rightProduct.name;
     dictionaryOfViews[rightProduct.name] += 1;
 
+    workingProducts.push(arrayOfAll.indexOf(leftProduct.name));
+    workingProducts.push(arrayOfAll.indexOf(centerProduct.name));
+    workingProducts.push(arrayOfAll.indexOf(rightProduct.name));
+
 }
 
+drawIt();
 
 
 function clickHandler(event) {
@@ -151,24 +166,44 @@ function clickHandler(event) {
         rightProduct.clickCountPlus();
     }
     
-    // console.log(`${leftProduct.name}:${dictionaryOfClicks[leftProduct.name]} clicks`);
-    // console.log(`${leftProduct.name}:${dictionaryOfViews[leftProduct.name]} views`);
-    // console.log(`${centerProduct.name}:${dictionaryOfClicks[centerProduct.name]} clicks`);
-    // console.log(`${leftProduct.name}:${dictionaryOfViews[centerProduct.name]} views`);
-    // console.log(`${rightProduct.name}:${dictionaryOfClicks[rightProduct.name]} clicks`);
-    // console.log(`${leftProduct.name}:${dictionaryOfViews[rightProduct.name]} views`);
 
     for (key in dictionaryOfClicks){
-        if (dictionaryOfClicks[key] < 25){
+        if (dictionaryOfClicks[key] < 3){
             drawIt();
-        }else if(dictionaryOfClicks[key] === 25){
-            window.alert(`${dictionaryOfClicks[key]} voted 25 times!`);
-            leftImageElem.removeEventListener('click', clickHandler);
-            centerImageElem.removeEventListener('click', clickHandler);
-            rightImageElem.removeEventListener('click', clickHandler);
-            break;
+        }else if(dictionaryOfClicks[key] === 3){
+            console.log(`key test: ${dictionaryOfClicks[key]}`);
+            drawTheGraph();
+            leftProductImage.removeEventListener('click', clickHandler);
+            centerProductImage.removeEventListener('click', clickHandler);
+            rightProductImage.removeEventListener('click', clickHandler);
+            console.log(`left elem: ${leftProductImage}`);
         }
     }
 }
 
-drawIt();
+function drawTheGraph(){
+    var arrayOfValues = [];
+    for (key in dictionaryOfClicks){
+        arrayOfValues.push(dictionaryOfClicks[key]);
+    }
+
+    var chart = new Chart(ctx.getContext('2d'), {
+  
+  type: 'bar',
+
+  // The data for our dataset
+  data: {
+    labels: arrayOfAll,
+    datasets: [{
+      label: 'Clicking Dataset',
+      backgroundColor: '#ffff00',
+      borderColor: 'rgb(255, 99, 132)',
+      data: arrayOfValues
+    }]
+  },
+
+  // Configuration options go here
+  options: {}
+});
+}
+
