@@ -1,4 +1,6 @@
 
+
+
 var arrayOfAll = [
     'bag',
     'banana',
@@ -43,24 +45,24 @@ var dictionaryOfClicks = {
 
 var dictionaryOfViews = {
 
-        'bag':0,
-        'banana':0,
-        'bathroom':0,
-        'boots':0,
-        'breakfast':0,
-        'bubblegum':0,
-        'chair':0,
-        'cthulhu':0,
-        'dog-duck':0,
-        'dragon':0,
-        'pen':0,
-        'pet-sweep':0,
-        'scissors':0,
-        'shark':0,
-        'tauntaun':0,
-        'unicorn':0,
-        'water-can':0,
-        'wine-glass':0}
+    'bag':0,
+    'banana':0,
+    'bathroom':0,
+    'boots':0,
+    'breakfast':0,
+    'bubblegum':0,
+    'chair':0,
+    'cthulhu':0,
+    'dog-duck':0,
+    'dragon':0,
+    'pen':0,
+    'pet-sweep':0,
+    'scissors':0,
+    'shark':0,
+    'tauntaun':0,
+    'unicorn':0,
+    'water-can':0,
+    'wine-glass':0}
 
 
 var workingProducts = [];
@@ -70,16 +72,14 @@ function Producto(producto) {
 
     this.name = producto;
     this.imgUrl = `assets/${producto}.jpg`;
-    this.clickCtr = 0;
-    this.shownCtr = 0;
+    // this.clickCtr = 0;
+    // this.shownCtr = 0;
   }
   
-  Producto.voteCount = 0;
-  Producto.maxVote = 25;
 
-  Producto.prototype.clickCountPlus = function(){
-      this.clickCtr++;
-  }
+//   Producto.prototype.clickCountPlus = function(){
+//       this.clickCtr++;
+//   }
 
   
   var ctx = document.getElementById('graphContainer');
@@ -126,21 +126,21 @@ function drawIt(){
     leftProduct = new Producto(arrayOfAll[new3[0]]);
     leftProductImage.setAttribute('src', leftProduct.imgUrl);
     leftProductNameElement.textContent = leftProduct.name;
-    dictionaryOfViews[leftProduct.name] += 1;
+    dictionaryOfViews[leftProduct.name]++;
 
     
   
     centerProduct = new Producto(arrayOfAll[new3[1]]);
     centerProductImage.setAttribute('src', centerProduct.imgUrl);
     centerProductNameElement.textContent = centerProduct.name;
-    dictionaryOfViews[centerProduct.name] += 1;
+    dictionaryOfViews[centerProduct.name]++;
 
     
 
     rightProduct = new Producto(arrayOfAll[new3[2]]);
     rightProductImage.setAttribute('src', rightProduct.imgUrl);
     rightProductNameElement.textContent = rightProduct.name;
-    dictionaryOfViews[rightProduct.name] += 1;
+    dictionaryOfViews[rightProduct.name]++;
 
     workingProducts.push(arrayOfAll.indexOf(leftProduct.name));
     workingProducts.push(arrayOfAll.indexOf(centerProduct.name));
@@ -148,7 +148,7 @@ function drawIt(){
 
 }
 
-drawIt();
+
 
 
 function clickHandler(event) {
@@ -157,20 +157,20 @@ function clickHandler(event) {
   
     if(id == 'leftProduct_img') {
         dictionaryOfClicks[leftProduct.name] += 1;
-        leftProduct.clickCountPlus();
+        // leftProduct.clickCountPlus();
     }else if(id == 'centerProduct_img') {
         dictionaryOfClicks[centerProduct.name] += 1;
-        centerProduct.clickCountPlus();
+        // centerProduct.clickCountPlus();
     }else if(id == 'rightProduct_img'){
         dictionaryOfClicks[rightProduct.name] += 1;
-        rightProduct.clickCountPlus();
+        // rightProduct.clickCountPlus();
     }
     
 
     for (key in dictionaryOfClicks){
-        if (dictionaryOfClicks[key] < 25){
+        if (dictionaryOfClicks[key] < 3){
             drawIt();
-        }else if(dictionaryOfClicks[key] === 25){
+        }else if(dictionaryOfClicks[key] === 3){
             console.log(`key test: ${dictionaryOfClicks[key]}`);
             drawTheGraph();
             leftProductImage.removeEventListener('click', clickHandler);
@@ -182,9 +182,15 @@ function clickHandler(event) {
 }
 
 function drawTheGraph(){
-    var arrayOfValues = [];
+    var arrayOfClickValues = [];
     for (key in dictionaryOfClicks){
-        arrayOfValues.push(dictionaryOfClicks[key]);
+        arrayOfClickValues.push(dictionaryOfClicks[key]);
+    }
+
+    var arrayOfViewValues = [];
+    for (key in dictionaryOfViews){
+        arrayOfViewValues.push(dictionaryOfViews[key]);
+        dictionaryOfViews[key] = 0;
     }
 
     var chart = new Chart(ctx.getContext('2d'), {
@@ -196,10 +202,15 @@ function drawTheGraph(){
     labels: arrayOfAll,
     datasets: [{
       label: 'Clicking Dataset',
-      backgroundColor: '#ffff00',
+      backgroundColor: 'blue',
       borderColor: 'rgb(255, 99, 132)',
-      data: arrayOfValues
-    }]
+      data: arrayOfClickValues
+    }, {
+        label: 'Views Dataset',
+        backgroundColor: 'red',
+        borderColor: 'rgb(255, 99, 132)',
+        data: arrayOfViewValues
+      }]
   },
 
   // Configuration options go here
@@ -207,3 +218,4 @@ function drawTheGraph(){
 });
 }
 
+drawIt();
